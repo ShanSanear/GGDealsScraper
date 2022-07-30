@@ -2,23 +2,12 @@ from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup
-import pydantic
-from urllib.parse import urlencode, quote_plus
+from urllib.parse import quote_plus
+
+from src.database.models.game_price_data import GamePriceData
+from src.database.models.shop_price import ShopPrice
 
 GG_DEALS_GAME_LINK = "https://gg.deals/game/{}/"
-
-
-class ShopPrice(pydantic.BaseModel):
-    name: str
-    price: str
-    currency: str
-    approximate: bool
-
-
-class GamePriceData(pydantic.BaseModel):
-    game_id: int
-    game_title: str
-    prices: list[ShopPrice]
 
 
 def get_soup(link, headers):
