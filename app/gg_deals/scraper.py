@@ -23,7 +23,7 @@ def get_game_price(title):
     game_name = soup.find("a", {"class": "game-price-anchor-link"})
     found_title = game_name.find("h1").text
     assert title.lower() in found_title.lower(), f"Title mismatch, found text header: {found_title}, requested: {title}"
-    game_header = soup.find("div", {"class" : "game-header-box"})
+    game_header = soup.find("div", {"class": "game-header-box"})
     game_id = game_header.attrs['data-container-game-id']
     shops = soup.findAll("div", {"class": "game-deals-item"})
     game_price_data = GamePriceData(
@@ -33,7 +33,7 @@ def get_game_price(title):
     )
     for shop in shops:
         shop_name = shop.find_all_next("img")[0]['alt']
-        price_entry = shop.find("span", {"class" : "game-price-current"}).text.strip()
+        price_entry = shop.find("span", {"class": "game-price-current"}).text.strip()
         price, currency = price_entry.split(" ")
         approximate = "~" in price
         price = price.replace("~", "")
@@ -43,11 +43,4 @@ def get_game_price(title):
             currency=currency,
             approximate=approximate
         ))
-
-    print(
-        game_price_data
-    )
-    Path("out.json").write_text(game_price_data.json(indent=4), encoding='utf-8')
-
-
-get_game_price("Elden Ring")
+    return game_price_data.dict()
