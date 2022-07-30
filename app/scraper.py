@@ -4,8 +4,8 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import quote_plus
 
-from src.database.models.game_price_data import GamePriceData
-from src.database.models.shop_price import ShopPrice
+from app.database.models.game_price_data import GamePriceData
+from app.database.models.shop_price import ShopPrice
 
 GG_DEALS_GAME_LINK = "https://gg.deals/game/{}/"
 

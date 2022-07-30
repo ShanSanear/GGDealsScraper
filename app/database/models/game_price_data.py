@@ -1,6 +1,6 @@
 import pydantic
 
-from src.database.models.shop_price import ShopPrice
+from app.database.models.shop_price import ShopPrice
 
 
 class GamePriceData(pydantic.BaseModel):
