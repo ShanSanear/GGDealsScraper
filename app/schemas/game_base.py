@@ -5,31 +5,34 @@ from pydantic import BaseModel
 
 class GamePriceBase(BaseModel):
     price: str
+    shop_name: str
 
 
 class GamePriceCreate(GamePriceBase):
     pass
 
+    class Config:
+        orm_mode = True
+
 
 class GamePrice(GamePriceBase):
-    id: int
-    game_id: int
-    shop_name: str
+    id: Optional[int]
+    game_id: Optional[int]
 
     class Config:
         orm_mode = True
 
 
 class GameBase(BaseModel):
+    id: int
     title: str
 
 
 class GameCreate(GameBase):
-    pass
+    prices: Optional[list[GamePriceCreate]] = None
 
 
 class Game(GameBase):
-    id: int
     prices: Optional[list[GamePrice]] = None
 
     class Config:

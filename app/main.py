@@ -25,5 +25,6 @@ def read_game(game_title: str, db: Session = Depends(get_db)):
         return crud.create_game_by_title(db, game_title)
     return db_game
 
+
 if __name__ == '__main__':
     uvicorn.run("app.main:app", host='0.0.0.0', port=8000, reload=True)

@@ -37,14 +37,9 @@ def create_game_by_title(db: Session, game_title: str) -> models.Game:
     db_item = models.Game(
         title=scrapped_info.title,
         id=scrapped_info.id,
-        prices=[
-            models.game_price.GamePrice(
-                price=game_price.price,
-                game_id=scrapped_info.id,
-                shop_name=game_price.shop_name
-            ) for game_price in scrapped_info.prices
-        ]
-    )
+        prices=[models.GamePrice(
+            **price_info.dict()) for price_info in scrapped_info.prices
+        ])
     db.add(db_item)
     db.commit()
     db.refresh(db_item)

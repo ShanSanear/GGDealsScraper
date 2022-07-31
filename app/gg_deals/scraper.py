@@ -1,5 +1,3 @@
-import random
-
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import quote_plus
@@ -15,7 +13,7 @@ def get_soup(link, headers):
     return BeautifulSoup(response.content, "html.parser")
 
 
-def get_game_prices(title) -> schemas.Game:
+def get_game_prices(title) -> schemas.GameCreate:
     link = GG_DEALS_GAME_LINK.format(quote_plus(title.replace(" ", "-")))
     headers = {"X-Requested-With": "XMLHttpRequest"}
     soup = get_soup(link, headers=headers)
@@ -32,12 +30,11 @@ def get_game_prices(title) -> schemas.Game:
         price, currency = price_entry.split(" ")
         approximate = "~" in price
         price = price.replace("~", "")
-        prices.append(schemas.GamePrice(
-            id=random.randint(0, 12312431234), # TODO - remove this randomness lol
-            game_id=int(game_id),
+        prices.append(schemas.GamePriceCreate(
             price=price,
+            shop_name=shop_name
         ))
-    return schemas.Game(
+    return schemas.GameCreate(
         id=int(game_id),
         title=title,
         prices=prices
