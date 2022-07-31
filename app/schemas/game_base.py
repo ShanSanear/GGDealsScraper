@@ -14,6 +14,7 @@ class GamePriceCreate(GamePriceBase):
 class GamePrice(GamePriceBase):
     id: int
     game_id: int
+    shop_name: str
 
     class Config:
         orm_mode = True

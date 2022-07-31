@@ -32,10 +32,6 @@ def create_game_price(db: Session, game_price: schemas.GamePriceCreate, game_id:
     return db_item
 
 
-def request_game_download(title):
-    pass
-
-
 def create_game_by_title(db: Session, game_title: str) -> models.Game:
     scrapped_info = scraper.get_game_prices(game_title)
     db_item = models.Game(
@@ -45,10 +41,10 @@ def create_game_by_title(db: Session, game_title: str) -> models.Game:
             models.game_price.GamePrice(
                 price=game_price.price,
                 game_id=scrapped_info.id,
+                shop_name=game_price.shop_name
             ) for game_price in scrapped_info.prices
         ]
     )
-    # db_item = models.Game(**scrapped_info.dict())
     db.add(db_item)
     db.commit()
     db.refresh(db_item)
