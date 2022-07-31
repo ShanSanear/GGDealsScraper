@@ -1,22 +1,23 @@
+import random
 from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import quote_plus
 
-from app.database.models.game_price_data import GamePriceData
-from app.database.models.shop_price import ShopPrice
+import schemas
 
 GG_DEALS_GAME_LINK = "https://gg.deals/game/{}/"
 
 
 def get_soup(link, headers):
-    response = requests.get(link, headers=headers)
-    response.raise_for_status()
-    return BeautifulSoup(response.content, "html.parser")
+    # response = requests.get(link, headers=headers)
+    # response.raise_for_status()
+    # Path("content.html").write_bytes(response.content)
+    return BeautifulSoup(Path("content.html").read_bytes(), "html.parser")
 
 
-def get_game_price(title):
+def get_game_prices(title) -> schemas.Game:
     link = GG_DEALS_GAME_LINK.format(quote_plus(title.replace(" ", "-")))
     headers = {"X-Requested-With": "XMLHttpRequest"}
     soup = get_soup(link, headers=headers)
@@ -26,21 +27,29 @@ def get_game_price(title):
     game_header = soup.find("div", {"class": "game-header-box"})
     game_id = game_header.attrs['data-container-game-id']
     shops = soup.findAll("div", {"class": "game-deals-item"})
-    game_price_data = GamePriceData(
-        game_id=int(game_id),
-        game_title=title,
-        prices=[]
-    )
+    # game_price_data = GamePriceData(
+    #     game_id=int(game_id),
+    #     game_title=title,
+    #     prices=[]
+    # )
+    prices = []
     for shop in shops:
         shop_name = shop.find_all_next("img")[0]['alt']
         price_entry = shop.find("span", {"class": "game-price-current"}).text.strip()
         price, currency = price_entry.split(" ")
         approximate = "~" in price
         price = price.replace("~", "")
-        game_price_data.prices.append(ShopPrice(
-            name=shop_name,
+        prices.append(schemas.GamePrice(
+            # name=shop_name,
+            id=random.randint(0, 12312431234),
+            game_id=int(game_id),
             price=price,
-            currency=currency,
-            approximate=approximate
+            # game_id=int(game_id)
+            # currency=currency,
+            # approximate=approximate
         ))
-    return game_price_data.dict()
+    return schemas.Game(
+        id=int(game_id),
+        title=title,
+        prices=prices
+    )
