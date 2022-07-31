@@ -1,30 +1,13 @@
 import uvicorn
-from fastapi import Depends, FastAPI
-from sqlalchemy.orm import Session
+from fastapi import FastAPI
 
-import crud
-from database import Base, SessionLocal, engine
-import schemas
+import routers.game
+from database import Base, engine
 
-app = FastAPI()
 Base.metadata.create_all(bind=engine)
 
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-@app.get("/game/{game_title}", response_model=schemas.Game)
-def read_game(game_title: str, db: Session = Depends(get_db)):
-    db_game = crud.get_game_by_title(db, game_title=game_title)
-    if db_game is None:
-        return crud.create_game_by_title(db, game_title)
-    return db_game
-
+app = FastAPI()
+app.include_router(routers.game.router)
 
 if __name__ == '__main__':
     uvicorn.run("app.main:app", host='0.0.0.0', port=8000, reload=True)
