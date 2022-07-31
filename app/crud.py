@@ -2,6 +2,7 @@ import sqlalchemy
 from sqlalchemy.orm import Session
 
 import models, schemas
+import models.game_price
 from gg_deals import scraper
 
 
@@ -24,7 +25,7 @@ def create_game(db: Session, game: schemas.GameCreate):
 
 
 def create_game_price(db: Session, game_price: schemas.GamePriceCreate, game_id: int):
-    db_item = models.GamePrice(**game_price.dict(), game_id=game_id)
+    db_item = models.game_price.GamePrice(**game_price.dict(), game_id=game_id)
     db.add(db_item)
     db.commit()
     db.refresh(db_item)
@@ -41,7 +42,7 @@ def create_game_by_title(db: Session, game_title: str) -> models.Game:
         title=scrapped_info.title,
         id=scrapped_info.id,
         prices=[
-            models.GamePrice(
+            models.game_price.GamePrice(
                 price=game_price.price,
                 game_id=scrapped_info.id,
             ) for game_price in scrapped_info.prices
