@@ -1,5 +1,4 @@
 import random
-from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup
@@ -11,10 +10,9 @@ GG_DEALS_GAME_LINK = "https://gg.deals/game/{}/"
 
 
 def get_soup(link, headers):
-    # response = requests.get(link, headers=headers)
-    # response.raise_for_status()
-    # Path("content.html").write_bytes(response.content)
-    return BeautifulSoup(Path("content.html").read_bytes(), "html.parser")
+    response = requests.get(link, headers=headers)
+    response.raise_for_status()
+    return BeautifulSoup(response.content, "html.parser")
 
 
 def get_game_prices(title) -> schemas.Game:
@@ -27,11 +25,6 @@ def get_game_prices(title) -> schemas.Game:
     game_header = soup.find("div", {"class": "game-header-box"})
     game_id = game_header.attrs['data-container-game-id']
     shops = soup.findAll("div", {"class": "game-deals-item"})
-    # game_price_data = GamePriceData(
-    #     game_id=int(game_id),
-    #     game_title=title,
-    #     prices=[]
-    # )
     prices = []
     for shop in shops:
         shop_name = shop.find_all_next("img")[0]['alt']
@@ -40,13 +33,9 @@ def get_game_prices(title) -> schemas.Game:
         approximate = "~" in price
         price = price.replace("~", "")
         prices.append(schemas.GamePrice(
-            # name=shop_name,
-            id=random.randint(0, 12312431234),
+            id=random.randint(0, 12312431234), # TODO - remove this randomness lol
             game_id=int(game_id),
             price=price,
-            # game_id=int(game_id)
-            # currency=currency,
-            # approximate=approximate
         ))
     return schemas.Game(
         id=int(game_id),
