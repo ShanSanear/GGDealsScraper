@@ -1,3 +1,5 @@
+import random
+
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import quote_plus
@@ -9,17 +11,28 @@ GG_DEALS_GAME_LINK = "https://gg.deals/game/{}/"
 
 def get_soup(link, headers):
     response = requests.get(link, headers=headers)
+
     response.raise_for_status()
     return BeautifulSoup(response.content, "html.parser")
 
 
 def get_game_prices(title) -> schemas.GameCreate:
-    link = GG_DEALS_GAME_LINK.format(quote_plus(title.replace(" ", "-")))
+    simplified_title = title.replace(" ", "-").replace(":", "-"). \
+        replace("--", "-").replace("!", "").replace("'","").replace(
+        "™", "").replace("®", "").replace("--", "-")
+    print(f"Trying to find game with title: {simplified_title}")
+    link = GG_DEALS_GAME_LINK.format(
+        quote_plus(simplified_title))
     headers = {"X-Requested-With": "XMLHttpRequest"}
-    soup = get_soup(link, headers=headers)
+    try:
+        soup = get_soup(link, headers=headers)
+    except requests.exceptions.HTTPError as err:
+        print(f"Couldn't find the game: {title}")
+        raise
     game_name = soup.find("a", {"class": "game-price-anchor-link"})
     found_title = game_name.find("h1").text
-    assert title.lower() in found_title.lower(), f"Title mismatch, found text header: {found_title}, requested: {title}"
+    if not title.lower() in found_title.lower():
+        print(f"Title mismatch, found text header: {found_title}, requested: {title}. Double check if it correct")
     game_header = soup.find("div", {"class": "game-header-box"})
     game_id = game_header.attrs['data-container-game-id']
     shops = soup.findAll("div", {"class": "game-deals-item"})
