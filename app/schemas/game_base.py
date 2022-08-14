@@ -1,3 +1,4 @@
+import datetime
 from typing import Optional
 
 from pydantic import BaseModel
@@ -26,6 +27,7 @@ class GamePrice(GamePriceBase):
 class GameBase(BaseModel):
     id: int
     title: str
+    last_update: Optional[datetime.datetime]
 
 
 class GameCreate(GameBase):
