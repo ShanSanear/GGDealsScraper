@@ -3,7 +3,7 @@ from fastapi import FastAPI
 
 import routers.game
 from database import Base, engine
-from .config import config
+from config import config
 
 Base.metadata.create_all(bind=engine)
 

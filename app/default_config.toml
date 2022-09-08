@@ -1,5 +1,5 @@
 [APP]
-ADDRESS = "http://0.0.0.0"
+ADDRESS = "0.0.0.0"
 PORT = 8000
 
 [DATABASE]
