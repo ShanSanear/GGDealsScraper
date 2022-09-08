@@ -3,8 +3,8 @@ from datetime import datetime
 import sqlalchemy
 from sqlalchemy.orm import Session
 
-import models, schemas
-import models.game_price
+import models
+import schemas
 from gg_deals import scraper
 
 
@@ -29,7 +29,7 @@ def create_game(db: Session, game: schemas.GameCreate):
 
 
 def create_game_price(db: Session, game_price: schemas.GamePriceCreate, game_id: int):
-    db_item = models.game_price.GamePrice(**game_price.dict(), game_id=game_id)
+    db_item = models.GamePrice(**game_price.dict(), game_id=game_id)
     db.add(db_item)
     db.commit()
     db.refresh(db_item)
