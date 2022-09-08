@@ -18,7 +18,6 @@ class ConfigFile(BaseModel):
     APP: ConfigApp
 
 
-_raw_config = tomli.loads(Path("config.toml").read_text())
 config = ConfigFile.parse_obj(
     tomli.loads((Path(__file__).parent / "config.toml").read_text())
 )
