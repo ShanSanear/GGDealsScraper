@@ -6,7 +6,8 @@ from urllib.parse import quote_plus
 
 import schemas
 
-GG_DEALS_GAME_LINK = "https://gg.deals/game/{}/"
+GG_DEALS_LANGUAGE = "pl"
+GG_DEALS_GAME_LINK = f"https://gg.deals/{GG_DEALS_LANGUAGE}/game/{{}}/"
 
 
 def get_soup(link, headers):
