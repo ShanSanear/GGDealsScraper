@@ -5,6 +5,7 @@ Description="GGDealsScraper service"
 Type=simple
 User=ggdealsscraper
 Group=services
+WorkingDirectory=/path/to/working/directory
 ExecStart=/path/to/change.sh
 TimeoutStartSec=0
 RemainAfterExit=yes
