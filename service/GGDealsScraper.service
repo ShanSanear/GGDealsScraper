@@ -1,0 +1,10 @@
+[Unit]
+Description="GGDealsScraper service"
+
+[Service]
+Type=simple
+User=ggdealsscraper
+Group=services
+ExecStart=/path/to/change.sh
+TimeoutStartSec=0
+RemainAfterExit=yes
