@@ -1,6 +1,8 @@
 [APP]
 ADDRESS = "0.0.0.0"
 PORT = 8000
+DEBUG = true
+RELOAD = true
 
 [DATABASE]
 CONNECTION_STRING = "sqlite:///./sql_app.db"

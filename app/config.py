@@ -11,6 +11,8 @@ class ConfigDatabase(BaseModel):
 class ConfigApp(BaseModel):
     ADDRESS: str
     PORT: int
+    DEBUG: bool
+    RELOAD: bool
 
 
 class ConfigFile(BaseModel):
@@ -18,6 +20,6 @@ class ConfigFile(BaseModel):
     APP: ConfigApp
 
 
-config = ConfigFile.parse_obj(
+config: ConfigFile = ConfigFile.parse_obj(
     tomli.loads((Path(__file__).parent / "config.toml").read_text())
 )

@@ -12,5 +12,9 @@ app.include_router(routers.game.router)
 
 if __name__ == "__main__":
     uvicorn.run(
-        "app.main:app", host=config.APP.ADDRESS, port=config.APP.PORT, reload=True
+        "app.main:app",
+        host=config.APP.ADDRESS,
+        port=config.APP.PORT,
+        reload=config.APP.RELOAD,
+        debug=config.APP.DEBUG,
     )
