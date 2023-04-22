@@ -36,8 +36,8 @@ def get_game_prices(title) -> schemas.GameCreate:
     except requests.exceptions.HTTPError as err:
         print(f"Couldn't find the game: {title}")
         raise
-    game_name = soup.find("a", {"class": "game-price-anchor-link"})
-    found_title = game_name.find("h1").text
+    game_name = soup.find("a", {"class": "game-info-title"})
+    found_title = game_name.text
     if not title.lower() in found_title.lower():
         print(
             f"Title mismatch, found text header: {found_title}, requested: {title}. Double check if it correct"
