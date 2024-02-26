@@ -7,7 +7,7 @@ authors = ["Shan <pruskimateusz93@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 beautifulsoup4 = "^4.11.1"
-requests = "^2.28.1"
+requests = "^2.31.0"
 pydantic = "^1.9.1"
 fastapi = "^0.109.1"
 uvicorn = "^0.18.2"
